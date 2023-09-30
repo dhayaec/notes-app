@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
+import useAutoFocus from "./useAutoFocus";
 
 interface Note {
   id: number;
@@ -10,6 +11,8 @@ interface Note {
 const END_POINT = "http://localhost:5000";
 
 function App() {
+  const inputFocus = useAutoFocus();
+
   const [notes, setNotes] = useState<Note[]>([]);
 
   useEffect(() => {
@@ -50,6 +53,7 @@ function App() {
       setNotes([newNote, ...notes]);
       setTitle("");
       setContent("");
+      inputFocus.current?.focus();
     } catch (e) {
       console.log(e);
     }
@@ -121,6 +125,7 @@ function App() {
           onChange={(event) => setTitle(event.target.value)}
           placeholder="Title"
           required
+          ref={inputFocus}
         ></input>
         <textarea
           value={content}
